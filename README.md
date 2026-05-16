@@ -1,55 +1,53 @@
 # update-my-pi
 
-**Systemupdate-Script für den Raspberry Pi (durin) — Debian 12 Bookworm, ARM64**
+**System update script for Raspberry Pi — Debian 12 Bookworm, ARM64**
 
-Einheitliches Update-Script für alle Paketmanager und Tools auf dem System. Inspiriert von [update-my-mac](https://github.com/olafgeibig/update-my-mac).
+Unified update script that covers all package managers and tools on the system. Inspired by [update-my-mac](https://github.com/olafgeibig/update-my-mac).
 
 ## Motivation
 
-Verschiedene Paketquellen (apt, npm, uv, pip, Docker, Cargo) machen System-Updates zum Flickenteppich. Dieses Script fasst alles in einem Befehl zusammen — ähnlich wie `brew upgrade --all` auf dem Mac.
+Multiple package sources (apt, npm, uv, Docker, Cargo) make system updates a patchwork. This script consolidates everything into one command.
 
 ## Features
 
-- **Ein Befehl** — alle Updates auf einmal
-- **Modular** — einzelne Komponenten gezielt updaten
-- **Ausführliches Logging** — nachvollziehbar was passiert ist
-- **Graceful Degradation** — fehlende Tools werden übersprungen, kein Abbruch
-- **Installierbar** — `--install` macht es global verfügbar
+- **Single command** — all updates at once
+- **Modular** — update individual components selectively
+- **Detailed logging** — transparent, timestamped logs
+- **Graceful degradation** — missing tools are skipped, never aborts
+- **Installable** — `--install` makes it globally available
 
-## Komponenten
+## Components
 
-| Modul | Befehl | Quellen |
-|-------|--------|---------|
-| **apt** | `sudo apt update && apt upgrade` | Debian-Paketverwaltung |
-| **npm** | `npm update --location=global` | Globale Node-Pakete |
-| **uv** | `uv self update` + `uv tool upgrade --all` | Python-Tools (UV) |
-| **pip** | `pip3 install --upgrade --user` | Python-User-Pakete |
-| **Docker** | `docker system prune` | Unbenutzte Container/Images |
-| **Cargo** | `rustup update` | Rust-Toolchain (falls installiert) |
+| Module | Command | Source |
+|--------|---------|--------|
+| **apt** | `sudo apt update && apt upgrade` | Debian package manager |
+| **npm** | `npm update --location=global` | Global Node packages |
+| **uv** | `uv self update` + `uv tool upgrade --all` | Python tools (uv) |
+| **Docker** | `docker system prune` | Unused containers/images |
+| **Cargo** | `rustup update` | Rust toolchain (if installed) |
 
-## Verwendung
+## Usage
 
 ```bash
-# Quick-Update (Standard: apt, npm, uv, pip, Docker)
+# Quick update (default: apt, npm, uv, Docker)
 ./update-my-pi.sh
 
-# Full-Update (+ Cargo, Cache-Bereinigung)
+# Full update (+ Cargo, cache cleanup)
 ./update-my-pi.sh --full
 
-# Einzelne Module
-./update-my-pi.sh --apt           # Nur apt
-./update-my-pi.sh --npm           # Nur npm
-./update-my-pi.sh --uv            # Nur uv
-./update-my-pi.sh --pip           # Nur pip3
-./update-my-pi.sh --docker        # Nur Docker Prune
-./update-my-pi.sh --cargo         # Nur Cargo (rustup)
-./update-my-pi.sh --cleanup       # Nur Caches leeren
+# Individual modules
+./update-my-pi.sh --apt           # apt only
+./update-my-pi.sh --npm           # npm only
+./update-my-pi.sh --uv            # uv only
+./update-my-pi.sh --docker        # Docker prune only
+./update-my-pi.sh --cargo         # Cargo (rustup) only
+./update-my-pi.sh --cleanup       # Cache cleanup only
 
-# Installation (global verfügbar)
+# Install globally
 sudo ./update-my-pi.sh --install
-# Danach: update-my-pi
+# Afterwards: update-my-pi
 
-# Hilfe
+# Help
 ./update-my-pi.sh --help
 ```
 
@@ -59,20 +57,20 @@ sudo ./update-my-pi.sh --install
 sudo ./update-my-pi.sh --install
 ```
 
-Danach ist `update-my-pi` global verfügbar und kann von überall ausgeführt werden.
+After installation, `update-my-pi` is available globally.
 
 ## Logging
 
-- **Ort:** `~/.local/share/update-my-pi/`
+- **Location:** `~/.local/share/update-my-pi/`
 - **Format:** `update-YYYYMMDD_HHMMSS.log`
-- **Inhalt:** Zeitgestempelte Logs aller Befehle mit Exit-Codes
+- **Content:** Timestamped logs of all commands with exit codes
 
-## Voraussetzungen
+## Requirements
 
-- **Debian 12 (Bookworm)** oder kompatibel
-- **sudo** für apt-Update
+- **Debian 12 (Bookworm)** or compatible
+- **sudo** for apt updates
 - **optional:** rustup (`curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`)
 
-## Lizenz
+## License
 
 Apache-2.0
